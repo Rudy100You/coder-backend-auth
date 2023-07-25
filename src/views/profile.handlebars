@@ -1,0 +1,10 @@
+<div class="container p-5">
+    <h1>Welcome {{user.name}}</h1>
+    <h2>Role: {{user.role}}</h2>
+    <p>Email: {{user.email}}</p>
+    {{#if user.birthday}}
+    <p>Birthday: {{user.birthday}}</p>
+    {{/if}}
+    <button class="btn btn-danger" id="logOutButton" >Log Out</button>
+</div>
+<script src="profile.js"></script>
