@@ -1,5 +1,5 @@
 import express from "express";
-import {__dirname} from "./utils.js";
+import {__dirname, pathJoin} from "./utils.js";
 import handlebars from "express-handlebars";
 import viewsRouter from "./routes/views.router.js";
 import { config } from "dotenv";
@@ -8,7 +8,8 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import sessionsRouter from "./routes/sessions.router.js";
-config({ path: __dirname + "\\.env" });
+//import initializePassport from "./config/passport.config.js";
+config({ path: pathJoin(__dirname, ".env" )});
 
 const {
   MDB_USER,
@@ -16,14 +17,17 @@ const {
   MDB_HOST,
   DATABASE_NAME,
   PORT,
-  SESSION_SECRET,
+  GH_SESSION_SECRET,
+  //GH_CLIENT_ID
 } = process.env;
 
 const MONGO_URL = `mongodb+srv://${MDB_USER}:${MDB_PASS}@${MDB_HOST}/${DATABASE_NAME}?retryWrites=true&w=majority`;
 
 const app = express();
 
-app.use(express.static(__dirname + "/public"));
+//initializePassport(GH_CLIENT_ID, GH_SESSION_SECRET)
+
+app.use(express.static(pathJoin(__dirname ,"public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -36,7 +40,7 @@ app.use(
     }),
     resave: false,
     saveUninitialized: false,
-    secret: SESSION_SECRET,
+    secret: GH_SESSION_SECRET,
   })
 );
 

@@ -1,10 +1,11 @@
 import { fileURLToPath } from "url";
-import { dirname } from "path";
+import { dirname, join } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 
 export const __dirname = dirname(__filename);
 
+export const pathJoin = join
 export const commonErrorMessages = Object.freeze({
   INTERNAL_ERROR_STATUS: 500,
 });

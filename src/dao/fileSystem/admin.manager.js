@@ -1,9 +1,9 @@
-import {__dirname} from "../../utils.js";
+import {__dirname, pathJoin} from "../../utils.js";
 import fs from "fs"
 
 export class AdminManager {
     constructor (){
-        this.path = __dirname+"\\data\\admins.json"
+        this.path = pathJoin(__dirname,"data","admins.json")
             if (!fs.existsSync(this.path)) 
             throw "Error: File not Found";
     }
