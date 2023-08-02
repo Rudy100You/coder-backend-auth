@@ -4,6 +4,9 @@
   "description": "",
   "main": "./src/app.js",
   "type": "module",
+  "engines": {
+    "node": "18.15.0"
+  },
   "scripts": {
     "start": "node --trace-uncaught ./src/app.js",
     "dev": "nodemon ./src/app.js",
