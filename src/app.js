@@ -8,7 +8,8 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import sessionsRouter from "./routes/sessions.router.js";
-//import initializePassport from "./config/passport.config.js";
+import initializePassport from "./config/passport.config.js";
+import passport from "passport";
 config({ path: pathJoin(__dirname, ".env" )});
 
 const {
@@ -17,15 +18,17 @@ const {
   MDB_HOST,
   DATABASE_NAME,
   PORT,
+  RENDER_ENDPOINT,
   GH_SESSION_SECRET,
-  //GH_CLIENT_ID
+  GH_CLIENT_ID
 } = process.env;
 
 const MONGO_URL = `mongodb+srv://${MDB_USER}:${MDB_PASS}@${MDB_HOST}/${DATABASE_NAME}?retryWrites=true&w=majority`;
 
 const app = express();
 
-//initializePassport(GH_CLIENT_ID, GH_SESSION_SECRET)
+initializePassport(GH_CLIENT_ID, GH_SESSION_SECRET)
+app.use(passport.initialize())
 
 app.use(express.static(pathJoin(__dirname ,"public")));
 app.use(express.json());
@@ -51,7 +54,7 @@ app.set("view engine", "handlebars");
 app.use(cookieParser());
 
 const validateSession = (req, res, next) => {
-  if (req.session && req.session.user) {
+  if (req.session.passport && req.session.passport.user) {
     // Session is valid, proceed to the next middleware or route handler
     next();
   } else {
@@ -61,7 +64,7 @@ const validateSession = (req, res, next) => {
 };
 
 const validateActiveSession = (req, res, next) => {
-  if (req.session && req.session.user) {
+  if (req.session.passport && req.session.passport.user) {
     res.redirect("/profile");
   } else {
     // Session is not valid or not present, redirect to login page or return an error
@@ -98,9 +101,9 @@ mongoose
     });
 
     app.use(validateSession);
-    app.use("/", viewsRouter);
+    app.use("/",validateSession, viewsRouter);
 
     app.listen(PORT, () => {
-      console.log(`Servidor iniciado en https://127.0.0.1:${PORT}/ con éxito`);
+      console.log(`Servidor iniciado en ${ RENDER_ENDPOINT || "https://127.0.0.1:"+ PORT+"/"} con éxito`);
     });
   });

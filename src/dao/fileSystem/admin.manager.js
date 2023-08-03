@@ -7,9 +7,9 @@ export class AdminManager {
             if (!fs.existsSync(this.path)) 
             throw "Error: File not Found";
     }
-    async findAdminByEmailAndPassword(email, password){
+    async findAdminByEmailAndPassword(email){
             const adminUsers = await this.parseDataFromFile()
-            const adminUser = adminUsers.admins.find((user)=> user.email === email && user.password === password)
+            const adminUser = adminUsers.admins.find((user)=> user.email === email)
             return adminUser
         }
 

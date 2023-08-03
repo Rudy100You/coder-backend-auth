@@ -10,8 +10,9 @@ $(document).ready(function () {
         "Content-Type": "application/json",
       },
     }).then(async (res) => {
-      const resBody = await res.json();
+      
       if (res.status !== 200) {
+        const resBody = await res.json();
         $("#loginErrorMessage").text(resBody.message);
       }
       else{

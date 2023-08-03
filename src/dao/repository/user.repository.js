@@ -5,4 +5,8 @@ export class UserRepository extends CommonMDBRepository {
   constructor() {
     super("users", userSchema);
   }
+  async getOneByCriteria(criteria) {
+    const found = await this.baseModel.findOne(criteria,null,{lean:true});
+    return found;
+  }
 }
